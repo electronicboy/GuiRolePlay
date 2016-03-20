@@ -12,6 +12,7 @@ import org.bukkit.conversations.ValidatingPrompt;
 import org.bukkit.entity.Player;
 
 
+	@SuppressWarnings("SpellCheckingInspection")
 	public class ConversationManager implements ConversationAbandonedListener {
 		private ConversationFactory conv_1;
 		private ConversationFactory conv_2;
