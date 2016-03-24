@@ -131,10 +131,8 @@ import org.bukkit.inventory.ItemStack;
 		public void onPlayerInteract(PlayerInteractEntityEvent e) {
 			if(e.getRightClicked() instanceof Player) {
 				if(e.getPlayer().hasPermission("rpc.get")){
-					if(plugin.config.getBoolean("settings.must_shift_rightclick")) {
-						if(e.getPlayer().isSneaking()) {
+					if(plugin.config.getBoolean("settings.must_shift_rightclick") && e.getPlayer().isSneaking()) {
 							plugin.sql.display(e.getPlayer(), (Player)e.getRightClicked());
-						}
 					}else {
 						plugin.sql.display(e.getPlayer(), (Player)e.getRightClicked());
 					}

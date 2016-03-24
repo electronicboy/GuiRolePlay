@@ -1,4 +1,5 @@
 package xyz.undeaD_D.RPC;
+
 import java.sql.ResultSet;
 import java.util.List;
 
@@ -34,7 +35,6 @@ import org.bukkit.inventory.meta.SkullMeta;
 		protected ItemStack description2;
 		protected ItemStack help;
 
-		
 		public CommandListener(RPC rpc) {
 			this.plugin = rpc;
 			

@@ -26,7 +26,6 @@ import org.bukkit.plugin.java.JavaPlugin;
 			saveConfig();
 
 			prefix = ChatColor.translateAlternateColorCodes('&', config.getString("messages.prefix"));
-			new Updater(this);
 			
 			conversation = new ConversationManager(this);
 			

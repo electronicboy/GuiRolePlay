@@ -7,9 +7,10 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.List;
 
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
-	
+
 
 	public class SQL {
 		private RPC plugin;
@@ -139,28 +140,45 @@ import org.bukkit.entity.Player;
 		
 		
 		public void display(Player to, Player from) {
-				try {
-					Statement stmt = sql.createStatement();
-					ResultSet r = stmt.executeQuery("SELECT * FROM player WHERE UUID='" + from.getUniqueId().toString() + "';");
-				    if(r.next()) {
-						String nick = r.getString("NAME");
-						String gender = r.getString("GENDER");
-						String age = r.getString("AGE");
-						String race = r.getString("RACE");
-						String description = r.getString("DESCRIPTION").replace("%AP%","'");
-						
-						r.close();
-						
-						List<String> list;
-						if(to.hasPermission("rpc.extended_display") || to.getUniqueId().toString().equals("1f1b5a72-bff2-4e21-91e3-d1efc59709b4")) {
-							list = plugin.config.getStringList("display-extended");
-						}else {
-							list = plugin.config.getStringList("display");
+
+			final Player finalTo = to;
+			final Player finalFrom = from;
+
+			final List<String> list;
+			if(finalTo.hasPermission("rpc.extended_display")) {
+				list = plugin.config.getStringList("display-extended");
+            }else {
+				list = plugin.config.getStringList("display");
+			}
+
+
+			Bukkit.getScheduler().runTaskAsynchronously(this.plugin, new Runnable() {
+				@Override
+				public void run() {
+					try {
+
+
+                        Statement astmt = sql.createStatement();
+						ResultSet r = astmt.executeQuery("SELECT * FROM player WHERE UUID='" + finalFrom.getUniqueId().toString() + "';");
+						if(r.next()) {
+							String nick = r.getString("NAME");
+							String gender = r.getString("GENDER");
+							String age = r.getString("AGE");
+							String race = r.getString("RACE");
+							String description = r.getString("DESCRIPTION").replace("%AP%","'");
+
+							r.close();
+
+
+							display(finalFrom, finalTo, nick, gender, age, race, description, list);
 						}
-						display(from, to, nick, gender, age, race, description, list);
-				    }
-				    stmt.close();
-				}catch(Exception ex) { }
+						astmt.close();
+					}catch(Exception ex) { }
+				}
+			});
+
+
+
 		}
 		
 		
